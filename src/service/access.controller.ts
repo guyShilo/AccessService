@@ -82,11 +82,11 @@ export class AccessController {
 
       // @ts-expect-error
       const getDecodedToken: IJwtToken = this.accessService.decodeToken(getToken);
-      const getValidToken = this.accessService.generateKey(getDecodedToken.userId, getDecodedToken.permissions);
+      const getValidToken = this.accessService.generateKey(getDecodedToken.sub, getDecodedToken.permissions);
       const getTokenRecord = this.accessService.tokenRecord(getValidToken.access_token);
 
-      await this.userService.addToken(getDecodedToken.userId, getTokenRecord);
-      await this.userService.removeToken(getDecodedToken.userId, getToken);
+      await this.userService.addToken(getDecodedToken.sub, getTokenRecord);
+      await this.userService.removeToken(getDecodedToken.sub, getToken);
 
       return getValidToken;
     } catch (error) {
@@ -96,8 +96,8 @@ export class AccessController {
     }
   }
 
-  @Delete()
-  remove(@Request() request: express.Request) {
+  @Delete(':id')
+  remove(@Param('id') userId: string, @Request() request: express.Request) {
     const getAuthHeader = request.headers.authorization;
 
     if (_.isEmpty(getAuthHeader)) {
@@ -105,13 +105,10 @@ export class AccessController {
       throw new UnauthorizedException();
     }
 
+    const getToken = getAuthHeader.split('Bearer ')[1];
     try {
 
-      const getToken = getAuthHeader.split('Bearer ')[1];
-      const getDecodedToken = this.accessService.decodeToken(getToken);
-  
-      // @ts-expect-error
-      return this.userService.removeToken(getDecodedToken.userId, getToken)
+      return this.userService.removeToken(userId, getToken);
     } catch (error) {
 
       this.logger.error(error.message);
@@ -120,13 +117,23 @@ export class AccessController {
   }
 
   // (showing only the last 4 chars, like a credit card) with their status and last recently used date.
-  @Get(':userId')
-  async findAllTokens(@Param('userId') userId: string) {
-    try {
+  @Get()
+  async findAllTokens(@Param('userId') userId: string, @Request() request: express.Request) {
+    const getAuthHeader = request.headers.authorization;
 
-      return await this.userService.getTokens(userId);
+    if (_.isEmpty(getAuthHeader)) {
+
+      throw new UnauthorizedException();
+    }
+
+    const getToken = getAuthHeader.split('Bearer ')[1];
+    try {
+      // @ts-expect-error
+      const getDecodedToken: IJwtToken = this.accessService.decodeToken(getToken);
+
+      return await this.userService.getTokens(getDecodedToken.sub);
     } catch (error) {
-      
+
       this.logger.error(error);
       throw new NotFoundException();
     }

@@ -19,7 +19,7 @@ export class AccessService {
   }
 
   generateKey(userId: string, permissions: [string]) {
-    const payload = { sub: userId, permissions, userId };
+    const payload = { sub: userId, permissions };
     const getSignedToken = this.jwtService.sign(payload);
 
     return {
