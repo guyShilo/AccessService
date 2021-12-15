@@ -25,8 +25,7 @@ $ docker-compose up
 POST /
 ```
 
-1. generate a new signed JWT token for the user with the pre-defined set of permissions
-2. Update the "last usage" date of that token
+  - Given an authenticated user request (which contains the userId) and a list of required permissions, generate a new api key for the user.
 
 ```bash
 POST /authenticate
@@ -44,4 +43,5 @@ DELETE /{:id}
 GET /
 ```
   - Given an authenticated user request, get all the tokens of that user in an obstructed form (showing only the last 4 chars, like a credit card) with their status and last recently used date.
+
 Nest is [MIT licensed](LICENSE).
