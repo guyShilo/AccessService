@@ -40,7 +40,7 @@ POST /
 }
 ```
 
-```bash
+```json
 # With all the following requests please include Authorization Bearer in the request headers.
 ```
 
