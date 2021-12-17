@@ -116,7 +116,6 @@ export class AccessController {
     }
   }
 
-  // (showing only the last 4 chars, like a credit card) with their status and last recently used date.
   @Get()
   async findAllTokens(@Param('userId') userId: string, @Request() request: express.Request) {
     const getAuthHeader = request.headers.authorization;

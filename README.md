@@ -10,13 +10,15 @@
 
 ## Description
 
-Access Service built by Guy Shilo with [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Access Service built with [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
 ## Running the app
 
 ```bash
 # Docker
 $ docker-compose up
+
+# The service will be running on localhost:3000
 ```
 
 # Routes
@@ -25,7 +27,22 @@ $ docker-compose up
 POST /
 ```
 
-  - Given an authenticated user request (which contains the userId) and a list of required permissions, generate a new api key for the user.
+- Given an authenticated user request (which contains the userId) and a list of required permissions, generate a new api key for the user.
+
+```bash
+# Example
+{
+    "userId": "5df66399592878d7d80dad38",
+    "permissions": [
+        "read",
+        "write"
+    ]
+}
+```
+
+```bash
+# With all the following requests please include Authorization Bearer in the request headers.
+```
 
 ```bash
 POST /authenticate
@@ -37,11 +54,13 @@ POST /authenticate
 ```bash
 DELETE /{:id}
 ```
-  - Given an authenticated user request and an API token, revoke the usage of that token.
+
+- Given an authenticated user request and an API token, revoke the usage of that token.
 
 ```bash
 GET /
 ```
-  - Given an authenticated user request, get all the tokens of that user in an obstructed form (showing only the last 4 chars, like a credit card) with their status and last recently used date.
+- Given an authenticated user request, get all the tokens of that user in an obstructed form (showing only the last 4 chars, like a credit card) with their status and last recently used date.
+
 
 Nest is [MIT licensed](LICENSE).
