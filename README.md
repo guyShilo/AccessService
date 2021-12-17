@@ -23,13 +23,13 @@ $ docker-compose up
 
 # Routes
 
-```bash
+```
 POST /
 ```
 
 - Given an authenticated user request (which contains the userId) and a list of required permissions, generate a new api key for the user.
 
-```bash
+```json
 # Example
 {
     "userId": "5df66399592878d7d80dad38",
@@ -44,20 +44,20 @@ POST /
 # With all the following requests please include Authorization Bearer in the request headers.
 ```
 
-```bash
+```
 POST /authenticate
 ```
 
 1. generate a new signed JWT token for the user with the pre-defined set of permissions
 2. Update the "last usage" date of that token
 
-```bash
+```
 DELETE /{:id}
 ```
 
 - Given an authenticated user request and an API token, revoke the usage of that token.
 
-```bash
+```
 GET /
 ```
 - Given an authenticated user request, get all the tokens of that user in an obstructed form (showing only the last 4 chars, like a credit card) with their status and last recently used date.
